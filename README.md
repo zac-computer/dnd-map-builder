@@ -43,7 +43,7 @@ _Map Creation Interface_
 
 _Terrain Painting in Action_
 
-<video controls src="20250626-2137-46.9005496.mp4" title="🖼️ [Screenshot placeholder - Different terrain types being painted]"></video>
+<video controls src="terrain-painting.mp4" title="🖼️ [Screenshot placeholder - Different terrain types being painted]"></video>
 
 ## 🚀 Quick Start
 
@@ -57,7 +57,7 @@ _Terrain Painting in Action_
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/dnd-map-builder.git
+   git clone https://github.com/zac-computer/dnd-map-builder.git
    cd dnd-map-builder
    ```
 
@@ -325,9 +325,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-**Your Name** - [@yourusername](https://twitter.com/yourusername) - your.email@example.com
+**Zac** - GitHub: [@zac-computer](https://github.com/zac-computer)
 
-**Project Link**: [https://github.com/yourusername/dnd-map-builder](https://github.com/yourusername/dnd-map-builder)
+**Project Link**: [https://github.com/zac-computer/dnd-map-builder](https://github.com/zac-computer/dnd-map-builder)
 
 ---
 

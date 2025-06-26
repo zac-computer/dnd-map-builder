@@ -19,12 +19,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/dnd-map-builder.git"
+    "url": "https://github.com/zac-computer/dnd-map-builder.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/dnd-map-builder/issues"
+    "url": "https://github.com/zac-computer/dnd-map-builder/issues"
   },
-  "homepage": "https://github.com/yourusername/dnd-map-builder#readme",
+  "homepage": "https://github.com/zac-computer/dnd-map-builder#readme",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

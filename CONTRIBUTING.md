@@ -17,17 +17,20 @@ We're building the most intuitive and powerful web-based DnD map builder that co
 ### Development Setup
 
 1. **Fork the repository**
+
    ```bash
-   git clone https://github.com/yourusername/dnd-map-builder.git
+   git clone https://github.com/zac-computer/dnd-map-builder.git
    cd dnd-map-builder
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -47,6 +50,7 @@ We're building the most intuitive and powerful web-based DnD map builder that co
 ### Making Changes
 
 1. **Create a feature branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    # or
@@ -60,6 +64,7 @@ We're building the most intuitive and powerful web-based DnD map builder that co
    - Update documentation as needed
 
 3. **Test your changes**
+
    ```bash
    npm run lint          # Check linting
    npm run type-check     # Check TypeScript
@@ -68,6 +73,7 @@ We're building the most intuitive and powerful web-based DnD map builder that co
    ```
 
 4. **Commit your changes**
+
    ```bash
    git add .
    git commit -m "feat: add terrain blending feature"
@@ -81,18 +87,21 @@ We're building the most intuitive and powerful web-based DnD map builder that co
 ## 📝 Code Style Guidelines
 
 ### TypeScript
+
 - Use strict TypeScript with proper type annotations
 - Prefer interfaces over types for object definitions
 - Use meaningful variable and function names
 - Add JSDoc comments for complex functions
 
 ### React Components
+
 - Use functional components with hooks
 - Follow the existing component structure
 - Use proper prop typing with TypeScript
 - Keep components focused and single-purpose
 
 ### File Organization
+
 ```
 src/
 ├── app/                 # Next.js pages and layouts
@@ -106,6 +115,7 @@ src/
 ```
 
 ### Naming Conventions
+
 - **Files**: Use kebab-case for files (`map-builder.tsx`)
 - **Components**: Use PascalCase (`MapBuilder`)
 - **Functions**: Use camelCase (`generateMap`)
@@ -114,6 +124,7 @@ src/
 ## 🧪 Testing Guidelines
 
 ### Manual Testing Checklist
+
 When submitting PRs, verify:
 
 - [ ] **Canvas Operations**: Pan, zoom, rendering performance
@@ -125,6 +136,7 @@ When submitting PRs, verify:
 - [ ] **Cross-browser**: Test in Chrome, Firefox, Safari
 
 ### Automated Testing
+
 - Write unit tests for utility functions
 - Add integration tests for complex features
 - Ensure all tests pass before submitting PR
@@ -132,12 +144,14 @@ When submitting PRs, verify:
 ## 🎨 Design Guidelines
 
 ### UI/UX Principles
+
 - **Simplicity**: Keep interfaces clean and intuitive
 - **Accessibility**: Ensure features work with keyboard navigation
 - **Performance**: Maintain smooth canvas operations
 - **Consistency**: Follow existing design patterns
 
 ### Visual Standards
+
 - Use Tailwind CSS for styling
 - Follow existing color schemes and spacing
 - Ensure proper contrast ratios
@@ -167,12 +181,14 @@ For feature requests, provide:
 ## 📚 Documentation
 
 ### When to Update Documentation
+
 - Adding new features or components
 - Changing existing functionality
 - Adding new configuration options
 - Modifying development workflow
 
 ### Documentation Types
+
 - **README.md** - Project overview and quick start
 - **CLAUDE.md** - Claude Code integration guide
 - **TODO.md** - Development roadmap and features
@@ -181,6 +197,7 @@ For feature requests, provide:
 ## 🏆 Recognition
 
 Contributors will be recognized in:
+
 - Project README contributors section
 - Release notes for significant contributions
 - GitHub repository contributors page
@@ -188,12 +205,14 @@ Contributors will be recognized in:
 ## 🤝 Code of Conduct
 
 ### Our Standards
+
 - **Be respectful** and inclusive in all interactions
 - **Be constructive** in feedback and discussions
 - **Be patient** with newcomers and questions
 - **Be collaborative** in problem-solving
 
 ### Unacceptable Behavior
+
 - Harassment or discriminatory language
 - Personal attacks or trolling
 - Spamming or off-topic discussions
@@ -202,11 +221,13 @@ Contributors will be recognized in:
 ## 📞 Getting Help
 
 ### Communication Channels
+
 - **GitHub Issues** - Bug reports and feature requests
 - **GitHub Discussions** - General questions and ideas
 - **Pull Request Reviews** - Code-specific feedback
 
 ### Maintainer Response Times
+
 - **Issues**: 24-48 hours for initial response
 - **Pull Requests**: 48-72 hours for review
 - **Critical Bugs**: Same day response when possible
@@ -214,6 +235,7 @@ Contributors will be recognized in:
 ## 🎮 Community
 
 ### Contribution Types
+
 We welcome various types of contributions:
 
 - **Code contributions** - Features, fixes, improvements
@@ -223,6 +245,7 @@ We welcome various types of contributions:
 - **Community** - Answering questions, helping newcomers
 
 ### Good First Issues
+
 Look for issues labeled `good first issue` for beginner-friendly contributions.
 
 ---

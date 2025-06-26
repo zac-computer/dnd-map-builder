@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE
+.history/
+.vscode/
+.idea/
+
+# Large media files (use Git LFS for these)
+*.mp4
+*.mov
+*.avi

@@ -6,9 +6,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mobile-full-height flex h-screen flex-col">
+    <div className="flex h-screen max-h-screen flex-col">
       <Toolbar />
-      <main className="flex-1 overflow-hidden">{children}</main>
+      <main className="min-h-0 flex-1 overflow-hidden">{children}</main>
     </div>
   );
 }

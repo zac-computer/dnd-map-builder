@@ -7,7 +7,7 @@ export default function Home() {
   useMapPersistence();
 
   return (
-    <div className="h-full w-full">
+    <div className="flex h-full w-full flex-col">
       <Canvas />
     </div>
   );

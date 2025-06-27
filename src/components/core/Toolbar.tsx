@@ -60,7 +60,8 @@ export default function Toolbar() {
       <div className="flex items-center justify-between border-b border-gray-100 px-3 py-2 sm:px-4">
         <div className="flex items-center space-x-2 sm:space-x-3">
           <h1 className="text-lg font-bold text-gray-800 sm:text-xl">
-            🗺️ <span className="hidden sm:inline">DnD Map Builder</span><span className="sm:hidden">DMB</span>
+            🗺️ <span className="hidden sm:inline">DnD Map Builder</span>
+            <span className="sm:hidden">DMB</span>
           </h1>
           <span className="hidden text-sm text-gray-500 sm:inline">
             Interactive map creation for D&D campaigns
@@ -72,15 +73,30 @@ export default function Toolbar() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="flex items-center justify-center rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 sm:hidden"
           >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
-          
+
           {/* Desktop GitHub links */}
           <div className="hidden sm:flex sm:items-center sm:space-x-2">
             <a
@@ -125,8 +141,14 @@ export default function Toolbar() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 sm:hidden" onClick={() => setIsMobileMenuOpen(false)}>
-          <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-lg" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="bg-opacity-50 fixed inset-0 z-50 bg-black sm:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <div
+            className="absolute top-0 right-0 h-full w-80 bg-white shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-4">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
@@ -134,12 +156,22 @@ export default function Toolbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="rounded-md p-2 text-gray-600 hover:bg-gray-100"
                 >
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
-              
+
               {/* Mobile GitHub Links */}
               <div className="mb-6 space-y-2">
                 <a
@@ -149,7 +181,11 @@ export default function Toolbar() {
                   className="flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="h-4 w-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path
                       fillRule="evenodd"
                       d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
@@ -321,7 +357,9 @@ export default function Toolbar() {
       <div className="sm:hidden">
         {/* Compact Tool Selection */}
         <div className="border-b border-gray-100 px-3 py-2">
-          <div className="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500">Tools</div>
+          <div className="mb-1 text-xs font-medium tracking-wide text-gray-500 uppercase">
+            Tools
+          </div>
           <div className="flex gap-1">
             {TOOL_OPTIONS.map((tool) => (
               <button
@@ -346,7 +384,9 @@ export default function Toolbar() {
           {/* Terrain Selection (shown when paint tool is active) */}
           {activeTool === 'paint' && (
             <>
-              <div className="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500">Terrain</div>
+              <div className="mb-1 text-xs font-medium tracking-wide text-gray-500 uppercase">
+                Terrain
+              </div>
               <div className="grid grid-cols-4 gap-1">
                 {TERRAIN_OPTIONS.map((terrain) => (
                   <button
@@ -370,7 +410,9 @@ export default function Toolbar() {
           {/* Object Selection (shown when place tool is active) */}
           {activeTool === 'place' && (
             <>
-              <div className="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500">Objects</div>
+              <div className="mb-1 text-xs font-medium tracking-wide text-gray-500 uppercase">
+                Objects
+              </div>
               <div className="flex gap-1">
                 {OBJECT_OPTIONS.map((object) => (
                   <button

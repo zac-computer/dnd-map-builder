@@ -271,20 +271,28 @@ export default function Canvas() {
   );
 
   // Get touch coordinates (works with both React.Touch and native Touch)
-  const getTouchCoordinates = useCallback((touch: Touch, canvas: HTMLCanvasElement) => {
-    const rect = canvas.getBoundingClientRect();
-    return {
-      x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top,
-    };
-  }, []);
+  const getTouchCoordinates = useCallback(
+    (touch: Touch, canvas: HTMLCanvasElement) => {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top,
+      };
+    },
+    []
+  );
 
   // Calculate distance between two touches (for pinch-to-zoom)
-  const getTouchDistance = useCallback((touch1: Touch, touch2: Touch, canvas: HTMLCanvasElement) => {
-    const pos1 = getTouchCoordinates(touch1, canvas);
-    const pos2 = getTouchCoordinates(touch2, canvas);
-    return Math.sqrt(Math.pow(pos2.x - pos1.x, 2) + Math.pow(pos2.y - pos1.y, 2));
-  }, [getTouchCoordinates]);
+  const getTouchDistance = useCallback(
+    (touch1: Touch, touch2: Touch, canvas: HTMLCanvasElement) => {
+      const pos1 = getTouchCoordinates(touch1, canvas);
+      const pos2 = getTouchCoordinates(touch2, canvas);
+      return Math.sqrt(
+        Math.pow(pos2.x - pos1.x, 2) + Math.pow(pos2.y - pos1.y, 2)
+      );
+    },
+    [getTouchCoordinates]
+  );
 
   // Handle touch start (native touch event)
   const handleTouchStartNative = useCallback(
@@ -300,7 +308,7 @@ export default function Canvas() {
         // Single touch - similar to mouse down
         const touch = touches[0];
         const { x: touchX, y: touchY } = getTouchCoordinates(touch, canvas);
-        
+
         setLastTouchPos({ x: touchX, y: touchY });
 
         if (activeTool === 'pan') {
@@ -386,7 +394,11 @@ export default function Canvas() {
         setLastTouchPos({ x: touchX, y: touchY });
       } else if (touches.length === 2) {
         // Two touches - pinch to zoom
-        const currentDistance = getTouchDistance(touches[0], touches[1], canvas);
+        const currentDistance = getTouchDistance(
+          touches[0],
+          touches[1],
+          canvas
+        );
         if (touchStartDistance > 0) {
           const scaleChange = currentDistance / touchStartDistance;
           const newScale = Math.max(0.1, Math.min(3, view.scale * scaleChange));
@@ -417,7 +429,7 @@ export default function Canvas() {
   const handleTouchEndNative = useCallback(
     (event: TouchEvent) => {
       event.preventDefault();
-      
+
       if (event.touches.length === 0) {
         // All touches ended
         setIsTouching(false);
@@ -444,31 +456,74 @@ export default function Canvas() {
     const resizeCanvas = () => {
       const parent = canvas.parentElement;
       if (parent) {
-        canvas.width = parent.clientWidth;
-        canvas.height = parent.clientHeight;
-        render();
+        // Force a reflow to get accurate measurements
+        const rect = parent.getBoundingClientRect();
+        const width = Math.floor(rect.width);
+        const height = Math.floor(rect.height);
+
+        // Only resize if dimensions actually changed
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+          render();
+        }
       }
     };
 
     // Use the native touch event handlers directly
 
-    resizeCanvas();
+    // Initial resize with a small delay for mobile browsers
+    const timeoutId = setTimeout(resizeCanvas, 100);
+
+    // Use ResizeObserver for better resize detection
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        resizeCanvas();
+      });
+
+      const parent = canvas.parentElement;
+      if (parent) {
+        resizeObserver.observe(parent);
+      }
+    }
+
     window.addEventListener('resize', resizeCanvas);
-    
+    window.addEventListener('orientationchange', resizeCanvas);
+
     // Add non-passive touch event listeners
-    canvas.addEventListener('touchstart', handleTouchStartNative, { passive: false });
-    canvas.addEventListener('touchmove', handleTouchMoveNative, { passive: false });
-    canvas.addEventListener('touchend', handleTouchEndNative, { passive: false });
-    canvas.addEventListener('touchcancel', handleTouchEndNative, { passive: false });
+    canvas.addEventListener('touchstart', handleTouchStartNative, {
+      passive: false,
+    });
+    canvas.addEventListener('touchmove', handleTouchMoveNative, {
+      passive: false,
+    });
+    canvas.addEventListener('touchend', handleTouchEndNative, {
+      passive: false,
+    });
+    canvas.addEventListener('touchcancel', handleTouchEndNative, {
+      passive: false,
+    });
 
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('orientationchange', resizeCanvas);
       canvas.removeEventListener('touchstart', handleTouchStartNative);
       canvas.removeEventListener('touchmove', handleTouchMoveNative);
       canvas.removeEventListener('touchend', handleTouchEndNative);
       canvas.removeEventListener('touchcancel', handleTouchEndNative);
+
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
     };
-  }, [render, handleTouchStartNative, handleTouchMoveNative, handleTouchEndNative]);
+  }, [
+    render,
+    handleTouchStartNative,
+    handleTouchMoveNative,
+    handleTouchEndNative,
+  ]);
 
   useEffect(() => {
     render();
@@ -477,7 +532,7 @@ export default function Canvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="touch-none select-none cursor-crosshair"
+      className="block h-full w-full cursor-crosshair touch-none select-none"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

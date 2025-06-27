@@ -16,13 +16,22 @@ export const metadata: Metadata = {
   title: 'DnD Map Builder - Interactive D&D Map Creation',
   description:
     'Create stunning custom maps for your Dungeon & Dragons campaigns with our interactive web-based map builder. Paint terrain, place objects, and build immersive worlds.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'DnD Map Builder',
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({

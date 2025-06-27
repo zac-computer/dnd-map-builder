@@ -45,7 +45,9 @@ _Map Creation Interface_
 
 _Terrain Painting in Action_
 
-<video controls src="terrain-painting.mp4" title="🖼️ [Screenshot placeholder - Different terrain types being painted]"></video>
+![Terrain Painting Demo](terrain-painting.gif)
+
+> **Interactive Demo**: Watch the terrain painting functionality in action! The demo shows painting different terrain types (grass, water, sand, stone) with smooth brush interactions on the grid-based canvas.
 
 ## 🚀 Quick Start
 

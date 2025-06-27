@@ -46,6 +46,6 @@ next-env.d.ts
 .idea/
 
 # Large media files (use Git LFS for these)
-*.mp4
+# *.mp4
 *.mov
 *.avi

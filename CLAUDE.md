@@ -4,7 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a DnD Map Builder prototype - a web-based, interactive map builder for Dungeon Masters to create custom maps for tabletop role-playing games. The project uses Next.js 14+ with TypeScript and follows a modern React architecture.
+This is a DnD Map Builder - a web-based, interactive map builder for Dungeon Masters to create custom maps for tabletop role-playing games. The project uses Next.js 14+ with TypeScript and follows a modern React architecture.
+
+**Live Demo**: https://zhuzh.dev
+**Repository**: https://github.com/zac-computer/dnd-map-builder
 
 ## Tech Stack
 

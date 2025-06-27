@@ -5,6 +5,8 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-38B2AC)](https://tailwindcss.com/)
 [![Zustand](https://img.shields.io/badge/Zustand-5.x-orange)](https://zustand-demo.pmnd.rs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-zhuzh.dev-brightgreen)](https://zhuzh.dev)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/zac-computer/dnd-map-builder)
 
 > A modern, interactive web-based map builder designed for Dungeon Masters to create stunning custom maps for their tabletop RPG campaigns.
 
@@ -33,7 +35,7 @@
 
 ## 🎯 Demo
 
-> **Live Demo**: [Coming Soon - Deployed on Vercel]
+> **🚀 Live Demo**: [https://zhuzh.dev](https://zhuzh.dev) - Try it now!
 
 ### Screenshots
 

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
@@ -16,6 +16,13 @@ export const metadata: Metadata = {
   title: 'DnD Map Builder - Interactive D&D Map Creation',
   description:
     'Create stunning custom maps for your Dungeon & Dragons campaigns with our interactive web-based map builder. Paint terrain, place objects, and build immersive worlds.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

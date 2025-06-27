@@ -17,6 +17,9 @@ export default function Canvas() {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isPanning, setIsPanning] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
+  const [touchStartDistance, setTouchStartDistance] = useState(0);
+  const [lastTouchPos, setLastTouchPos] = useState({ x: 0, y: 0 });
+  const [isTouching, setIsTouching] = useState(false);
 
   const {
     gridWidth,
@@ -267,6 +270,173 @@ export default function Canvas() {
     [view.scale, setView]
   );
 
+  // Get touch coordinates (works with both React.Touch and native Touch)
+  const getTouchCoordinates = useCallback((touch: Touch, canvas: HTMLCanvasElement) => {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    };
+  }, []);
+
+  // Calculate distance between two touches (for pinch-to-zoom)
+  const getTouchDistance = useCallback((touch1: Touch, touch2: Touch, canvas: HTMLCanvasElement) => {
+    const pos1 = getTouchCoordinates(touch1, canvas);
+    const pos2 = getTouchCoordinates(touch2, canvas);
+    return Math.sqrt(Math.pow(pos2.x - pos1.x, 2) + Math.pow(pos2.y - pos1.y, 2));
+  }, [getTouchCoordinates]);
+
+  // Handle touch start (native touch event)
+  const handleTouchStartNative = useCallback(
+    (event: TouchEvent) => {
+      event.preventDefault();
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const touches = event.touches;
+      setIsTouching(true);
+
+      if (touches.length === 1) {
+        // Single touch - similar to mouse down
+        const touch = touches[0];
+        const { x: touchX, y: touchY } = getTouchCoordinates(touch, canvas);
+        
+        setLastTouchPos({ x: touchX, y: touchY });
+
+        if (activeTool === 'pan') {
+          setIsPanning(true);
+          return;
+        }
+
+        const { x: gridX, y: gridY } = getGridCoordinates(
+          touchX,
+          touchY,
+          cellSize,
+          view.offsetX,
+          view.offsetY,
+          view.scale
+        );
+
+        if (!isPointInGrid(gridX, gridY, gridWidth, gridHeight)) return;
+
+        if (activeTool === 'paint') {
+          setTerrain(gridX, gridY, selectedTerrain);
+        } else if (activeTool === 'place') {
+          addObject({ x: gridX, y: gridY, type: selectedObject });
+        }
+      } else if (touches.length === 2) {
+        // Two touches - pinch to zoom
+        const distance = getTouchDistance(touches[0], touches[1], canvas);
+        setTouchStartDistance(distance);
+        setIsPanning(false);
+      }
+    },
+    [
+      activeTool,
+      cellSize,
+      view,
+      gridWidth,
+      gridHeight,
+      selectedTerrain,
+      selectedObject,
+      setTerrain,
+      addObject,
+      getTouchCoordinates,
+      getTouchDistance,
+    ]
+  );
+
+  // Handle touch move (native touch event)
+  const handleTouchMoveNative = useCallback(
+    (event: TouchEvent) => {
+      event.preventDefault();
+      const canvas = canvasRef.current;
+      if (!canvas || !isTouching) return;
+
+      const touches = event.touches;
+
+      if (touches.length === 1) {
+        // Single touch - panning or painting
+        const touch = touches[0];
+        const { x: touchX, y: touchY } = getTouchCoordinates(touch, canvas);
+
+        if (isPanning || activeTool === 'pan') {
+          const deltaX = touchX - lastTouchPos.x;
+          const deltaY = touchY - lastTouchPos.y;
+          setView({
+            offsetX: view.offsetX + deltaX,
+            offsetY: view.offsetY + deltaY,
+          });
+        } else if (activeTool === 'paint') {
+          // Continuous painting while dragging
+          const { x: gridX, y: gridY } = getGridCoordinates(
+            touchX,
+            touchY,
+            cellSize,
+            view.offsetX,
+            view.offsetY,
+            view.scale
+          );
+
+          if (isPointInGrid(gridX, gridY, gridWidth, gridHeight)) {
+            setTerrain(gridX, gridY, selectedTerrain);
+          }
+        }
+
+        setLastTouchPos({ x: touchX, y: touchY });
+      } else if (touches.length === 2) {
+        // Two touches - pinch to zoom
+        const currentDistance = getTouchDistance(touches[0], touches[1], canvas);
+        if (touchStartDistance > 0) {
+          const scaleChange = currentDistance / touchStartDistance;
+          const newScale = Math.max(0.1, Math.min(3, view.scale * scaleChange));
+          setView({ scale: newScale });
+          setTouchStartDistance(currentDistance);
+        }
+      }
+    },
+    [
+      isTouching,
+      isPanning,
+      activeTool,
+      lastTouchPos,
+      view,
+      cellSize,
+      gridWidth,
+      gridHeight,
+      selectedTerrain,
+      touchStartDistance,
+      getTouchCoordinates,
+      getTouchDistance,
+      setView,
+      setTerrain,
+    ]
+  );
+
+  // Handle touch end (native touch event)
+  const handleTouchEndNative = useCallback(
+    (event: TouchEvent) => {
+      event.preventDefault();
+      
+      if (event.touches.length === 0) {
+        // All touches ended
+        setIsTouching(false);
+        setIsPanning(false);
+        setTouchStartDistance(0);
+      } else if (event.touches.length === 1) {
+        // One touch remaining, reset for single touch interaction
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const touch = event.touches[0];
+          const { x: touchX, y: touchY } = getTouchCoordinates(touch, canvas);
+          setLastTouchPos({ x: touchX, y: touchY });
+        }
+        setTouchStartDistance(0);
+      }
+    },
+    [getTouchCoordinates]
+  );
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -280,10 +450,25 @@ export default function Canvas() {
       }
     };
 
+    // Use the native touch event handlers directly
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-    return () => window.removeEventListener('resize', resizeCanvas);
-  }, [render]);
+    
+    // Add non-passive touch event listeners
+    canvas.addEventListener('touchstart', handleTouchStartNative, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMoveNative, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEndNative, { passive: false });
+    canvas.addEventListener('touchcancel', handleTouchEndNative, { passive: false });
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      canvas.removeEventListener('touchstart', handleTouchStartNative);
+      canvas.removeEventListener('touchmove', handleTouchMoveNative);
+      canvas.removeEventListener('touchend', handleTouchEndNative);
+      canvas.removeEventListener('touchcancel', handleTouchEndNative);
+    };
+  }, [render, handleTouchStartNative, handleTouchMoveNative, handleTouchEndNative]);
 
   useEffect(() => {
     render();
@@ -292,7 +477,7 @@ export default function Canvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="cursor-crosshair"
+      className="touch-none select-none cursor-crosshair"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

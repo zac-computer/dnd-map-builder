@@ -27,7 +27,7 @@ const TOOL_OPTIONS: { type: ToolType; label: string; icon: string }[] = [
 
 export default function Toolbar() {
   const [showDemoDropdown, setShowDemoDropdown] = useState(false);
-  
+
   const {
     activeTool,
     selectedTerrain,
@@ -137,17 +137,17 @@ export default function Toolbar() {
           >
             📋 Load Demo
           </button>
-          
+
           {showDemoDropdown && (
             <>
               {/* Backdrop to close dropdown */}
-              <div 
-                className="fixed inset-0 z-10" 
+              <div
+                className="fixed inset-0 z-10"
                 onClick={() => setShowDemoDropdown(false)}
               />
-              
+
               {/* Dropdown menu */}
-              <div className="absolute right-0 top-full z-20 mt-2 w-80 rounded-md border bg-white shadow-lg">
+              <div className="absolute top-full right-0 z-20 mt-2 w-80 rounded-md border bg-white shadow-lg">
                 <div className="p-2">
                   <div className="mb-2 px-3 py-2 text-sm font-medium text-gray-900">
                     Demo Maps

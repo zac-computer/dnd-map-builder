@@ -29,19 +29,19 @@ export interface MapState {
   gridWidth: number;
   gridHeight: number;
   cellSize: number;
-  
+
   // Map data
   terrain: Map<string, TerrainType>;
   objects: MapObject[];
-  
+
   // UI state
   activeTool: ToolType;
   selectedTerrain: TerrainType;
   selectedObject: ObjectType;
-  
+
   // View state
   view: ViewState;
-  
+
   // Actions
   setGridSize: (width: number, height: number) => void;
   setCellSize: (size: number) => void;
@@ -54,7 +54,13 @@ export interface MapState {
   setView: (view: Partial<ViewState>) => void;
   clearMap: () => void;
   loadMapData: (data: Partial<MapState>) => void;
-  loadDemoMap: (terrain: Map<string, TerrainType>, objects: MapObject[], gridWidth: number, gridHeight: number, cellSize: number) => void;
+  loadDemoMap: (
+    terrain: Map<string, TerrainType>,
+    objects: MapObject[],
+    gridWidth: number,
+    gridHeight: number,
+    cellSize: number
+  ) => void;
 }
 
 const DEFAULT_GRID_SIZE = 50;
@@ -93,10 +99,7 @@ export const mapStore = create<MapState>()(
 
     addObject: (object: Omit<MapObject, 'id'>) =>
       set((state) => ({
-        objects: [
-          ...state.objects,
-          { ...object, id: crypto.randomUUID() },
-        ],
+        objects: [...state.objects, { ...object, id: crypto.randomUUID() }],
       })),
 
     removeObject: (id: string) =>
@@ -106,7 +109,8 @@ export const mapStore = create<MapState>()(
 
     setActiveTool: (tool: ToolType) => set({ activeTool: tool }),
 
-    setSelectedTerrain: (terrain: TerrainType) => set({ selectedTerrain: terrain }),
+    setSelectedTerrain: (terrain: TerrainType) =>
+      set({ selectedTerrain: terrain }),
 
     setSelectedObject: (object: ObjectType) => set({ selectedObject: object }),
 
@@ -129,7 +133,13 @@ export const mapStore = create<MapState>()(
         objects: data.objects || state.objects,
       })),
 
-    loadDemoMap: (terrain: Map<string, TerrainType>, objects: MapObject[], gridWidth: number, gridHeight: number, cellSize: number) =>
+    loadDemoMap: (
+      terrain: Map<string, TerrainType>,
+      objects: MapObject[],
+      gridWidth: number,
+      gridHeight: number,
+      cellSize: number
+    ) =>
       set({
         terrain,
         objects,

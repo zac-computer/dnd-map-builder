@@ -58,17 +58,14 @@ export default function Tooltip({
       {isVisible && (
         <div
           className={cn(
-            'absolute z-50 px-2 py-1 text-sm text-white bg-gray-900 rounded whitespace-nowrap',
+            'absolute z-50 rounded bg-gray-900 px-2 py-1 text-sm whitespace-nowrap text-white',
             getTooltipPosition(),
             className
           )}
         >
           {content}
           <div
-            className={cn(
-              'absolute w-0 h-0 border-4',
-              getArrowPosition()
-            )}
+            className={cn('absolute h-0 w-0 border-4', getArrowPosition())}
           />
         </div>
       )}

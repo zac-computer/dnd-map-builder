@@ -15,7 +15,7 @@ export function getGridCoordinates(
 ): { x: number; y: number } {
   const adjustedX = (mouseX - offsetX) / scale;
   const adjustedY = (mouseY - offsetY) / scale;
-  
+
   return {
     x: Math.floor(adjustedX / cellSize),
     y: Math.floor(adjustedY / cellSize),

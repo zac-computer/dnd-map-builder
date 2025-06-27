@@ -22,12 +22,12 @@ export default function useMapPersistence() {
   // Load saved map data on initialization
   useEffect(() => {
     const savedData = loadFromLocalStorage<PersistedMapData>(MAP_STORAGE_KEY);
-    
+
     if (savedData) {
       try {
         // Convert serialized terrain data back to Map
         const terrainMap = new Map(savedData.terrain);
-        
+
         store.loadMapData({
           gridWidth: savedData.gridWidth,
           gridHeight: savedData.gridHeight,
@@ -65,7 +65,8 @@ export default function useMapPersistence() {
   };
 
   const exportMapData = () => {
-    const { gridWidth, gridHeight, cellSize, terrain, objects } = mapStore.getState();
+    const { gridWidth, gridHeight, cellSize, terrain, objects } =
+      mapStore.getState();
     const exportData: PersistedMapData = {
       gridWidth,
       gridHeight,
@@ -78,7 +79,7 @@ export default function useMapPersistence() {
     const dataStr = JSON.stringify(exportData, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
-    
+
     const link = document.createElement('a');
     link.href = url;
     link.download = `dnd-map-${Date.now()}.json`;

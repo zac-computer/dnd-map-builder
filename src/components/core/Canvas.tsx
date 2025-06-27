@@ -33,81 +33,90 @@ export default function Canvas() {
     setView,
   } = useMapStore();
 
-  const drawGrid = useCallback((ctx: CanvasRenderingContext2D) => {
-    const canvas = ctx.canvas;
-    const { offsetX, offsetY, scale } = view;
+  const drawGrid = useCallback(
+    (ctx: CanvasRenderingContext2D) => {
+      const canvas = ctx.canvas;
+      const { offsetX, offsetY, scale } = view;
 
-    ctx.strokeStyle = '#e5e7eb';
-    ctx.lineWidth = 1;
+      ctx.strokeStyle = '#e5e7eb';
+      ctx.lineWidth = 1;
 
-    // Draw vertical lines
-    for (let x = 0; x <= gridWidth; x++) {
-      const screenX = x * cellSize * scale + offsetX;
-      if (screenX >= -10 && screenX <= canvas.width + 10) {
-        ctx.beginPath();
-        ctx.moveTo(screenX, offsetY);
-        ctx.lineTo(screenX, gridHeight * cellSize * scale + offsetY);
-        ctx.stroke();
+      // Draw vertical lines
+      for (let x = 0; x <= gridWidth; x++) {
+        const screenX = x * cellSize * scale + offsetX;
+        if (screenX >= -10 && screenX <= canvas.width + 10) {
+          ctx.beginPath();
+          ctx.moveTo(screenX, offsetY);
+          ctx.lineTo(screenX, gridHeight * cellSize * scale + offsetY);
+          ctx.stroke();
+        }
       }
-    }
 
-    // Draw horizontal lines
-    for (let y = 0; y <= gridHeight; y++) {
-      const screenY = y * cellSize * scale + offsetY;
-      if (screenY >= -10 && screenY <= canvas.height + 10) {
-        ctx.beginPath();
-        ctx.moveTo(offsetX, screenY);
-        ctx.lineTo(gridWidth * cellSize * scale + offsetX, screenY);
-        ctx.stroke();
+      // Draw horizontal lines
+      for (let y = 0; y <= gridHeight; y++) {
+        const screenY = y * cellSize * scale + offsetY;
+        if (screenY >= -10 && screenY <= canvas.height + 10) {
+          ctx.beginPath();
+          ctx.moveTo(offsetX, screenY);
+          ctx.lineTo(gridWidth * cellSize * scale + offsetX, screenY);
+          ctx.stroke();
+        }
       }
-    }
-  }, [gridWidth, gridHeight, cellSize, view]);
+    },
+    [gridWidth, gridHeight, cellSize, view]
+  );
 
-  const drawTerrain = useCallback((ctx: CanvasRenderingContext2D) => {
-    const { offsetX, offsetY, scale } = view;
+  const drawTerrain = useCallback(
+    (ctx: CanvasRenderingContext2D) => {
+      const { offsetX, offsetY, scale } = view;
 
-    terrain.forEach((terrainType, key) => {
-      const [x, y] = key.split(',').map(Number);
-      const screenX = x * cellSize * scale + offsetX;
-      const screenY = y * cellSize * scale + offsetY;
-      const size = cellSize * scale;
+      terrain.forEach((terrainType, key) => {
+        const [x, y] = key.split(',').map(Number);
+        const screenX = x * cellSize * scale + offsetX;
+        const screenY = y * cellSize * scale + offsetY;
+        const size = cellSize * scale;
 
-      if (
-        screenX + size >= 0 &&
-        screenX <= ctx.canvas.width &&
-        screenY + size >= 0 &&
-        screenY <= ctx.canvas.height
-      ) {
-        ctx.fillStyle = TERRAIN_COLORS[terrainType];
-        ctx.fillRect(screenX, screenY, size, size);
-      }
-    });
-  }, [terrain, cellSize, view]);
+        if (
+          screenX + size >= 0 &&
+          screenX <= ctx.canvas.width &&
+          screenY + size >= 0 &&
+          screenY <= ctx.canvas.height
+        ) {
+          ctx.fillStyle = TERRAIN_COLORS[terrainType];
+          ctx.fillRect(screenX, screenY, size, size);
+        }
+      });
+    },
+    [terrain, cellSize, view]
+  );
 
-  const drawObjects = useCallback((ctx: CanvasRenderingContext2D) => {
-    const { offsetX, offsetY, scale } = view;
+  const drawObjects = useCallback(
+    (ctx: CanvasRenderingContext2D) => {
+      const { offsetX, offsetY, scale } = view;
 
-    objects.forEach((obj) => {
-      const screenX = obj.x * cellSize * scale + offsetX;
-      const screenY = obj.y * cellSize * scale + offsetY;
-      const size = cellSize * scale;
+      objects.forEach((obj) => {
+        const screenX = obj.x * cellSize * scale + offsetX;
+        const screenY = obj.y * cellSize * scale + offsetY;
+        const size = cellSize * scale;
 
-      if (
-        screenX + size >= 0 &&
-        screenX <= ctx.canvas.width &&
-        screenY + size >= 0 &&
-        screenY <= ctx.canvas.height
-      ) {
-        ctx.fillStyle = getObjectColor(obj.type);
-        ctx.fillRect(
-          screenX + size * 0.1,
-          screenY + size * 0.1,
-          size * 0.8,
-          size * 0.8
-        );
-      }
-    });
-  }, [objects, cellSize, view]);
+        if (
+          screenX + size >= 0 &&
+          screenX <= ctx.canvas.width &&
+          screenY + size >= 0 &&
+          screenY <= ctx.canvas.height
+        ) {
+          ctx.fillStyle = getObjectColor(obj.type);
+          ctx.fillRect(
+            screenX + size * 0.1,
+            screenY + size * 0.1,
+            size * 0.8,
+            size * 0.8
+          );
+        }
+      });
+    },
+    [objects, cellSize, view]
+  );
 
   const getObjectColor = (type: string): string => {
     switch (type) {

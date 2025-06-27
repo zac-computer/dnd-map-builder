@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import useMapStore, { mapStore } from '@/stores/mapStore';
+import { mapStore } from '@/stores/mapStore';
 import { saveToLocalStorage, loadFromLocalStorage } from '@/lib/utils';
 import type { TerrainType, MapObject } from '@/stores/mapStore';
 
@@ -17,8 +17,6 @@ interface PersistedMapData {
 }
 
 export default function useMapPersistence() {
-  const store = useMapStore();
-
   // Load saved map data on initialization
   useEffect(() => {
     const savedData = loadFromLocalStorage<PersistedMapData>(MAP_STORAGE_KEY);
@@ -28,7 +26,8 @@ export default function useMapPersistence() {
         // Convert serialized terrain data back to Map
         const terrainMap = new Map(savedData.terrain);
 
-        store.loadMapData({
+        // Use the store directly to avoid dependency issues
+        mapStore.getState().loadMapData({
           gridWidth: savedData.gridWidth,
           gridHeight: savedData.gridHeight,
           cellSize: savedData.cellSize,
@@ -39,25 +38,39 @@ export default function useMapPersistence() {
         console.error('Failed to load map data:', error);
       }
     }
-  }, [store]);
+  }, []); // Empty dependency array - only run once on mount
 
-  // Save map data whenever the store changes
+  // Save map data whenever the store changes (with throttling)
   useEffect(() => {
-    const unsubscribe = mapStore.subscribe((state) => {
-      // Create serializable version of the state
-      const dataToSave: PersistedMapData = {
-        gridWidth: state.gridWidth,
-        gridHeight: state.gridHeight,
-        cellSize: state.cellSize,
-        terrain: Array.from(state.terrain.entries()), // Convert Map to array
-        objects: state.objects,
-        lastSaved: Date.now(),
-      };
+    let saveTimeout: NodeJS.Timeout;
 
-      saveToLocalStorage(MAP_STORAGE_KEY, dataToSave);
+    const unsubscribe = mapStore.subscribe((state) => {
+      // Clear existing timeout
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+
+      // Throttle saves to avoid excessive localStorage writes
+      saveTimeout = setTimeout(() => {
+        const dataToSave: PersistedMapData = {
+          gridWidth: state.gridWidth,
+          gridHeight: state.gridHeight,
+          cellSize: state.cellSize,
+          terrain: Array.from(state.terrain.entries()), // Convert Map to array
+          objects: state.objects,
+          lastSaved: Date.now(),
+        };
+
+        saveToLocalStorage(MAP_STORAGE_KEY, dataToSave);
+      }, 500); // Save after 500ms of inactivity
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+    };
   }, []);
 
   const clearSavedData = () => {
